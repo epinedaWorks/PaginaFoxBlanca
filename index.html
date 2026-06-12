@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fox Expositor — Conferencista Internacional</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#F0F4FA;
+  --bg2:#E8EFF8;
+  --bg3:#FFFFFF;
+  --navy:#0B1E3D;
+  --navy2:#142952;
+  --blue:#1A6BFF;
+  --blue-dim:rgba(26,107,255,0.09);
+  --blue-dim2:rgba(26,107,255,0.05);
+  --cyan:#00C8FF;
+  --text:#0B1E3D;
+  --muted:rgba(11,30,61,0.5);
+  --muted2:rgba(11,30,61,0.28);
+  --border:rgba(11,30,61,0.09);
+  --border2:rgba(26,107,255,0.18);
+}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;overflow-x:hidden;cursor:none;}
+
+/* CURSOR */
+#cur{position:fixed;width:10px;height:10px;background:var(--blue);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .25s,height .25s,background .2s;}
+#cur-r{position:fixed;width:36px;height:36px;border:1.5px solid rgba(26,107,255,.35);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .4s,height .4s;}
+body.hl #cur{width:46px;height:46px;background:var(--blue);mix-blend-mode:multiply;}
+body.hl #cur-r{width:68px;height:68px;border-color:rgba(26,107,255,.15);}
+
+/* PARTICLES CANVAS */
+#particles-canvas{position:absolute;inset:0;pointer-events:none;z-index:1;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:300;display:flex;justify-content:space-between;align-items:center;padding:20px 56px;background:rgba(240,244,250,.88);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);}
+.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:21px;letter-spacing:4px;color:var(--navy);}
+.nav-logo em{color:var(--blue);font-style:normal;}
+.nav-links{display:flex;gap:36px;}
+.nav-links a{font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .2s;cursor:none;}
+.nav-links a:hover{color:var(--blue);}
+.nav-cta{font-family:'Inter',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;background:var(--blue);color:#fff;border:none;padding:11px 26px;cursor:none;transition:opacity .2s;border-radius:2px;}
+.nav-cta:hover{opacity:.85;}
+
+/* HERO */
+.hero{min-height:100vh;padding-top:80px;display:grid;grid-template-columns:1fr 1fr;align-items:end;overflow:hidden;position:relative;background:var(--bg);}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:64px 64px;z-index:0;}
+.hero-glow{position:absolute;top:5%;right:5%;width:700px;height:700px;background:radial-gradient(circle,rgba(26,107,255,.07) 0%,transparent 65%);pointer-events:none;z-index:0;}
+.hero-glow2{position:absolute;bottom:10%;left:0%;width:500px;height:500px;background:radial-gradient(circle,rgba(0,200,255,.05) 0%,transparent 65%);pointer-events:none;z-index:0;}
+.hero-left{padding:0 0 80px 56px;position:relative;z-index:2;}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--blue);margin-bottom:32px;}
+.hero-eyebrow::before{content:'';width:36px;height:1px;background:var(--blue);}
+.hero-name{font-family:'Bebas Neue',sans-serif;font-size:clamp(72px,10vw,130px);line-height:.88;letter-spacing:1px;color:var(--navy);margin-bottom:28px;position:relative;}
+.hero-name .outline{-webkit-text-stroke:1.5px rgba(11,30,61,.18);color:transparent;}
+.hero-name .glitch{position:relative;display:inline-block;}
+.hero-name .glitch::before,.hero-name .glitch::after{content:attr(data-text);position:absolute;top:0;left:0;width:100%;height:100%;font-family:'Bebas Neue',sans-serif;}
+.hero-name .glitch::before{color:var(--blue);clip-path:polygon(0 0,100% 0,100% 40%,0 40%);animation:glitchT 4s infinite 1s;opacity:.7;}
+.hero-name .glitch::after{color:var(--cyan);clip-path:polygon(0 60%,100% 60%,100% 100%,0 100%);animation:glitchB 4s infinite 1.5s;opacity:.6;}
+@keyframes glitchT{0%,88%,100%{transform:translateX(0);}90%{transform:translateX(-4px);}92%{transform:translateX(3px);}94%{transform:translateX(0);}}
+@keyframes glitchB{0%,88%,100%{transform:translateX(0);}90%{transform:translateX(4px);}92%{transform:translateX(-2px);}94%{transform:translateX(0);}}
+.hero-roles{display:flex;gap:0;margin-bottom:36px;border:1px solid var(--border2);background:var(--bg3);}
+.hero-role{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);padding:10px 20px;border-right:1px solid var(--border);}
+.hero-role:last-child{border-right:none;}
+.hero-role.active{color:var(--blue);background:var(--blue-dim);}
+.hero-desc{font-size:15px;line-height:1.85;color:var(--muted);max-width:420px;margin-bottom:48px;}
+.hero-actions{display:flex;gap:16px;align-items:center;}
+.btn-fill{font-family:'Inter',sans-serif;font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;background:var(--blue);color:#fff;border:none;padding:16px 36px;cursor:none;transition:all .25s;border-radius:2px;position:relative;overflow:hidden;}
+.btn-fill::after{content:'';position:absolute;inset:0;background:rgba(255,255,255,.15);transform:translateX(-100%);transition:transform .3s;}
+.btn-fill:hover::after{transform:translateX(0);}
+.btn-ghost{font-family:'Inter',sans-serif;font-size:12px;font-weight:500;letter-spacing:2px;text-transform:uppercase;background:transparent;color:var(--navy);border:1.5px solid var(--border2);padding:15px 36px;cursor:none;transition:all .2s;border-radius:2px;}
+.btn-ghost:hover{border-color:var(--blue);color:var(--blue);}
+.hero-right{position:relative;height:100vh;display:flex;align-items:flex-end;justify-content:center;z-index:2;}
+.hero-img-wrap{width:480px;height:82vh;position:relative;overflow:hidden;clip-path:polygon(0 8%,100% 0,100% 100%,0 100%);}
+.hero-img-wrap img{width:100%;height:100%;object-fit:cover;object-position:top;}
+.hero-img-placeholder{width:100%;height:100%;background:linear-gradient(160deg,var(--bg2),var(--bg3));display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;border:1px solid var(--border);}
+.hero-img-placeholder svg{opacity:.2;}
+.hero-img-placeholder span{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted2);}
+.hero-tag{position:absolute;bottom:40px;left:-24px;background:var(--blue);padding:14px 24px;z-index:3;}
+.hero-tag-name{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:3px;color:#fff;}
+.hero-tag-sub{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.7);margin-top:2px;}
+.scroll-hint{position:absolute;bottom:40px;left:56px;display:flex;flex-direction:column;align-items:center;gap:6px;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--muted2);writing-mode:vertical-rl;z-index:2;}
+.scroll-line{width:1px;height:56px;background:var(--border);position:relative;overflow:hidden;}
+.scroll-line::after{content:'';position:absolute;top:-100%;left:0;width:100%;height:100%;background:var(--blue);animation:sl 2s ease-in-out infinite;}
+@keyframes sl{to{top:100%;}}
+
+/* TICKER */
+.ticker{background:var(--blue);padding:13px 0;overflow:hidden;white-space:nowrap;}
+.ticker-inner{display:inline-flex;animation:tk 22s linear infinite;}
+.ticker-item{font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:5px;color:#fff;padding-right:52px;}
+@keyframes tk{to{transform:translateX(-50%);}}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border);background:var(--bg3);}
+.stat{padding:48px 40px;border-right:1px solid var(--border);position:relative;overflow:hidden;transition:background .3s;}
+.stat:hover{background:var(--blue-dim2);}
+.stat::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px;background:var(--border);}
+.stat:first-child::before{background:var(--blue);}
+.stat:last-child{border-right:none;}
+.stat-n{font-family:'Bebas Neue',sans-serif;font-size:58px;letter-spacing:2px;color:var(--navy);line-height:1;}
+.stat-n span{color:var(--blue);}
+.stat-l{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:8px;}
+
+/* REVEAL ANIMATIONS */
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .7s ease,transform .7s ease;}
+.reveal.visible{opacity:1;transform:none;}
+.reveal-left{opacity:0;transform:translateX(-40px);transition:opacity .7s ease,transform .7s ease;}
+.reveal-left.visible{opacity:1;transform:none;}
+.reveal-right{opacity:0;transform:translateX(40px);transition:opacity .7s ease,transform .7s ease;}
+.reveal-right.visible{opacity:1;transform:none;}
+
+/* SOBRE MI */
+.about{display:grid;grid-template-columns:1fr 1.2fr;gap:100px;padding:100px 56px;border-bottom:1px solid var(--border);align-items:center;background:var(--bg);}
+.section-tag{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--blue);display:flex;align-items:center;gap:12px;margin-bottom:20px;}
+.section-tag::after{content:'';flex:1;height:1px;background:var(--border2);}
+.about-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(52px,7vw,88px);line-height:.9;letter-spacing:2px;color:var(--navy);}
+.about-title .ghost{-webkit-text-stroke:1.5px rgba(11,30,61,.15);color:transparent;}
+.about-body{font-size:15px;line-height:1.9;color:var(--muted);margin-bottom:28px;}
+.tag-list{display:flex;flex-wrap:wrap;gap:10px;margin-top:32px;}
+.tag{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--blue);border:1px solid var(--border2);padding:7px 16px;background:var(--blue-dim);transition:all .2s;cursor:none;}
+.tag:hover{background:var(--blue);color:#fff;}
+
+/* TECH BADGE ROW */
+.tech-badges{display:flex;gap:12px;margin-top:28px;flex-wrap:wrap;}
+.tech-badge{display:flex;align-items:center;gap:8px;background:var(--bg3);border:1px solid var(--border);padding:8px 16px;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);}
+.tech-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--blue);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+
+/* CONFERENCIAS */
+.conferences{padding:100px 56px;border-bottom:1px solid var(--border);background:var(--bg3);}
+.section-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:64px;}
+.section-title{font-family:'Bebas Neue',sans-serif;font-size:52px;letter-spacing:2px;color:var(--navy);}
+.section-count{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+.conf-list{display:flex;flex-direction:column;}
+.conf-item{display:flex;align-items:center;padding:30px 0;border-top:1px solid var(--border);cursor:none;position:relative;overflow:hidden;transition:padding-left .35s ease;}
+.conf-item::before{content:'';position:absolute;left:-100%;top:0;width:100%;height:100%;background:var(--blue-dim);transition:left .4s ease;}
+.conf-item:hover{padding-left:20px;}
+.conf-item:hover::before{left:0;}
+.conf-item:hover .conf-name{color:var(--blue);}
+.conf-num{font-size:11px;color:var(--muted2);width:56px;flex-shrink:0;letter-spacing:1px;}
+.conf-name{font-family:'Bebas Neue',sans-serif;font-size:38px;letter-spacing:2px;color:var(--navy);flex:1;transition:color .3s;}
+.conf-tags{display:flex;gap:8px;margin-right:40px;}
+.conf-tag{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);border:1px solid var(--border);padding:5px 12px;transition:all .3s;}
+.conf-item:hover .conf-tag{border-color:var(--border2);color:var(--blue);}
+.conf-arr{width:38px;height:38px;border:1.5px solid var(--border2);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .3s;}
+.conf-item:hover .conf-arr{background:var(--blue);border-color:var(--blue);}
+.conf-item:hover .conf-arr svg{stroke:#fff;}
+
+/* LIBRO */
+.book-section{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--border);}
+.book-left{padding:100px 56px;background:var(--navy);display:flex;flex-direction:column;justify-content:center;border-right:1px solid rgba(255,255,255,.06);}
+.book-left .section-tag{color:var(--cyan);}
+.book-left .section-tag::after{background:rgba(0,200,255,.2);}
+.book-title{font-family:'Bebas Neue',sans-serif;font-size:52px;letter-spacing:2px;color:#fff;line-height:.95;margin-bottom:24px;}
+.book-desc{font-size:15px;line-height:1.85;color:rgba(255,255,255,.55);margin-bottom:36px;}
+.book-points{display:flex;flex-direction:column;gap:12px;margin-bottom:40px;}
+.book-point{display:flex;align-items:flex-start;gap:12px;font-size:13px;color:rgba(255,255,255,.5);line-height:1.6;}
+.book-point::before{content:'';width:6px;height:6px;background:var(--cyan);border-radius:50%;flex-shrink:0;margin-top:6px;}
+.book-left .btn-fill{background:var(--cyan);color:var(--navy);}
+.book-right{display:flex;align-items:center;justify-content:center;padding:80px 56px;position:relative;background:var(--bg2);}
+.book-cover{width:260px;height:360px;background:var(--navy);border:1px solid rgba(11,30,61,.15);position:relative;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;padding:32px 28px;overflow:hidden;box-shadow:24px 24px 0 rgba(26,107,255,.12);}
+.book-cover-stripe{position:absolute;top:0;right:0;width:6px;height:100%;background:var(--blue);}
+.book-cover-num{font-family:'Bebas Neue',sans-serif;font-size:100px;letter-spacing:2px;color:rgba(26,107,255,.08);position:absolute;top:-10px;left:-10px;line-height:1;}
+.book-tag-small{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--cyan);margin-bottom:8px;}
+.book-title-cover{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px;color:#fff;line-height:1.05;}
+
+/* TESTIMONIOS */
+.testimonials{padding:100px 56px;border-bottom:1px solid var(--border);background:var(--bg);}
+.test-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin-top:56px;}
+.test-card{background:var(--bg3);padding:44px 36px;display:flex;flex-direction:column;gap:28px;transition:background .3s,transform .3s;position:relative;overflow:hidden;}
+.test-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px;background:var(--border);transition:background .3s;}
+.test-card:hover{background:#fff;transform:translateY(-4px);}
+.test-card:hover::before{background:var(--blue);}
+.test-stars{display:flex;gap:3px;}
+.star{color:var(--blue);font-size:13px;}
+.test-quote{font-size:14px;line-height:1.85;color:var(--muted);font-style:italic;flex:1;}
+.test-author{display:flex;align-items:center;gap:14px;}
+.test-av{width:40px;height:40px;background:var(--blue-dim);border:1.5px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:var(--blue);flex-shrink:0;}
+.test-name{font-size:13px;font-weight:600;color:var(--navy);}
+.test-role{font-size:11px;color:var(--muted);margin-top:2px;}
+
+/* CONTACTO */
+.contact{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--border);}
+.contact-left{padding:100px 56px;background:var(--bg3);border-right:1px solid var(--border);}
+.contact-big{font-family:'Bebas Neue',sans-serif;font-size:clamp(56px,8vw,96px);line-height:.9;letter-spacing:2px;color:var(--navy);margin-bottom:32px;}
+.contact-big span{color:var(--blue);}
+.contact-sub{font-size:15px;line-height:1.85;color:var(--muted);max-width:360px;margin-bottom:48px;}
+.contact-items{display:flex;flex-direction:column;}
+.c-item{display:flex;align-items:center;gap:18px;padding:22px 0;border-top:1px solid var(--border);}
+.c-item:last-child{border-bottom:1px solid var(--border);}
+.c-icon{width:42px;height:42px;border:1.5px solid var(--border2);background:var(--blue-dim);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.c-icon svg{stroke:var(--blue);}
+.c-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+.c-val{font-size:14px;color:var(--navy);margin-top:3px;}
+.contact-right{padding:100px 56px;display:flex;flex-direction:column;justify-content:center;background:var(--bg);}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.cf-group{display:flex;flex-direction:column;gap:8px;margin-bottom:16px;}
+.cf-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+.cf-input{background:#fff;border:1.5px solid var(--border);color:var(--navy);font-family:'Inter',sans-serif;font-size:14px;padding:14px 18px;outline:none;transition:border-color .2s;border-radius:2px;}
+.cf-input:focus{border-color:var(--blue);}
+.cf-input::placeholder{color:var(--muted2);}
+.cf-textarea{background:#fff;border:1.5px solid var(--border);color:var(--navy);font-family:'Inter',sans-serif;font-size:14px;padding:14px 18px;height:110px;resize:none;outline:none;transition:border-color .2s;border-radius:2px;}
+.cf-textarea:focus{border-color:var(--blue);}
+.cf-textarea::placeholder{color:var(--muted2);}
+
+/* TYPEWRITER */
+.typewriter-wrap{font-family:'Bebas Neue',sans-serif;font-size:clamp(72px,10vw,130px);line-height:.88;letter-spacing:1px;color:var(--navy);}
+#typewriter-text{color:var(--blue);}
+#typewriter-cursor{display:inline-block;width:3px;height:.8em;background:var(--blue);margin-left:4px;animation:blink .8s step-end infinite;vertical-align:middle;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+
+/* FOOTER */
+footer{background:var(--navy);border-top:1px solid rgba(26,107,255,.2);padding:40px 56px;display:flex;justify-content:space-between;align-items:center;}
+.footer-logo{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:5px;color:rgba(255,255,255,.4);}
+.footer-logo em{color:var(--blue);font-style:normal;}
+.footer-quote{font-size:13px;color:rgba(255,255,255,.25);font-style:italic;max-width:380px;text-align:center;}
+.footer-socials{display:flex;gap:10px;}
+.soc{width:36px;height:36px;border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;cursor:none;transition:all .2s;}
+.soc:hover{border-color:var(--blue);background:rgba(26,107,255,.15);}
+.soc svg{stroke:rgba(255,255,255,.35);transition:stroke .2s;}
+.soc:hover svg{stroke:var(--blue);}
+
+/* MOUSE TRAIL */
+.trail{position:fixed;pointer-events:none;border-radius:50%;z-index:9990;transform:translate(-50%,-50%);background:rgba(26,107,255,.25);}
+
+/* TILT CARDS */
+.tilt-card{transform-style:preserve-3d;transition:transform .15s ease;}
+
+@media(max-width:900px){
+  nav{padding:18px 24px;}
+  .nav-links{display:none;}
+  .hero{grid-template-columns:1fr;padding:120px 24px 60px;}
+  .hero-left{padding:0 0 40px;}
+  .hero-right{height:60vw;}
+  .hero-img-wrap{width:100%;height:100%;}
+  .stats{grid-template-columns:1fr 1fr;}
+  .about{grid-template-columns:1fr;padding:60px 24px;gap:40px;}
+  .conferences{padding:60px 24px;}
+  .conf-name{font-size:26px;}
+  .book-section{grid-template-columns:1fr;}
+  .book-left,.book-right{padding:60px 24px;}
+  .test-grid{grid-template-columns:1fr;}
+  .contact{grid-template-columns:1fr;}
+  .contact-left,.contact-right{padding:60px 24px;}
+  .form-row{grid-template-columns:1fr;}
+  footer{flex-direction:column;gap:20px;padding:32px 24px;text-align:center;}
+  .scroll-hint{display:none;}
+}
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="cur-r"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo"><em>FOX</em> EXPOSITOR</div>
+  <div class="nav-links">
+    <a href="#sobre">Sobre mí</a>
+    <a href="#conferencias">Conferencias</a>
+    <a href="#libro">Libro</a>
+    <a href="#testimonios">Testimonios</a>
+    <a href="#contacto">Contacto</a>
+  </div>
+  <button class="nav-cta">Contratar</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <canvas id="particles-canvas"></canvas>
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+
+  <div class="hero-left">
+    <div class="hero-eyebrow reveal">Conferencista Internacional</div>
+    <div class="hero-name reveal">
+      SOY<br>
+      <span class="glitch" data-text="FOX">FOX</span><br>
+      <span class="outline">EXPOSITOR</span>
+    </div>
+    <div class="hero-roles reveal">
+      <div class="hero-role active">Conferencista</div>
+      <div class="hero-role">Autor</div>
+      <div class="hero-role">Comunicador</div>
+    </div>
+    <p class="hero-desc reveal">Ayudo a empresas y personas a transformar su mentalidad, fortalecer su liderazgo y comunicarse con impacto. Más de 15 años llevando mensajes claros, prácticos y transformadores.</p>
+    <div class="hero-actions reveal">
+      <button class="btn-fill">Ver conferencias</button>
+      <button class="btn-ghost">Conoce mi historia</button>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-img-wrap">
+      <img src="fox1.jpg" alt="Fox Expositor" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="hero-img-placeholder" style="display:none;">
+        <svg width="72" height="72" fill="none" stroke="rgba(26,107,255,.5)" stroke-width="1" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        <span>Tu foto aquí</span>
+      </div>
+    </div>
+    <div class="hero-tag">
+      <div class="hero-tag-name">FOX EXPOSITOR</div>
+      <div class="hero-tag-sub">Conferencista · Autor · Comunicador</div>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner">
+    <span class="ticker-item">LIDERAZGO</span><span class="ticker-item">✦</span>
+    <span class="ticker-item">MOTIVACIÓN</span><span class="ticker-item">✦</span>
+    <span class="ticker-item">COMUNICACIÓN</span><span class="ticker-item">✦</span>
+    <span class="ticker-item">VENTAS</span><span class="ticker-item">✦</span>
+    <span class="ticker-item">MENTALIDAD</span><span class="ticker-item">✦</span>
+    <span class="ticker-item">TRANSFORMACIÓN</span><span class="ticker-item">✦</span>
+    <span class="ticker-item">LIDERAZGO</span><span class="ticker-item">✦</span>
+    <span class="ticker-item">MOTIVACIÓN</span><span class="ticker-item">✦</span>
+    <span class="ticker-item">COMUNICACIÓN</span><span class="ticker-item">✦</span>
+    <span class="ticker-item">VENTAS</span><span class="ticker-item">✦</span>
+    <span class="ticker-item">MENTALIDAD</span><span class="ticker-item">✦</span>
+    <span class="ticker-item">TRANSFORMACIÓN</span><span class="ticker-item">✦</span>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat reveal">
+    <div class="stat-n"><span class="counter" data-target="15">0</span><span>+</span></div>
+    <div class="stat-l">Años de experiencia</div>
+  </div>
+  <div class="stat reveal">
+    <div class="stat-n"><span class="counter" data-target="350">0</span><span>+</span></div>
+    <div class="stat-l">Conferencias realizadas</div>
+  </div>
+  <div class="stat reveal">
+    <div class="stat-n"><span class="counter" data-target="200">0</span><span>+</span></div>
+    <div class="stat-l">Empresas que confían</div>
+  </div>
+  <div class="stat reveal">
+    <div class="stat-n"><span class="counter" data-target="45">0</span>K<span>+</span></div>
+    <div class="stat-l">Personas impactadas</div>
+  </div>
+</div>
+
+<!-- SOBRE MÍ -->
+<section class="about" id="sobre">
+  <div class="reveal-left">
+    <div class="section-tag">Sobre mí</div>
+    <h2 class="about-title">QUIÉN<br>SOY<br><span class="ghost">YO</span></h2>
+    <div class="tech-badges">
+      <div class="tech-badge"><div class="tech-badge-dot"></div>Disponible 2025</div>
+      <div class="tech-badge"><div class="tech-badge-dot" style="background:#00C8FF"></div>LATAM</div>
+    </div>
+  </div>
+  <div class="reveal-right">
+    <p class="about-body">Conferencista internacional, autor y comunicador apasionado por el desarrollo humano y el liderazgo. Con más de 15 años de experiencia, he impactado a miles de personas en todo el mundo con mensajes claros, prácticos y transformadores.</p>
+    <p class="about-body">Mi misión es simple: que cada persona que me escuche salga con una herramienta concreta para mejorar su vida personal y profesional. No teoría. Resultados reales.</p>
+    <div class="tag-list">
+      <span class="tag">Liderazgo</span>
+      <span class="tag">Mentalidad ganadora</span>
+      <span class="tag">Comunicación</span>
+      <span class="tag">Ventas</span>
+      <span class="tag">Motivación</span>
+      <span class="tag">Transformación</span>
+    </div>
+  </div>
+</section>
+
+<!-- CONFERENCIAS -->
+<section class="conferences" id="conferencias">
+  <div class="section-header reveal">
+    <div>
+      <div class="section-tag">Temáticas</div>
+      <h2 class="section-title">CONFERENCIAS</h2>
+    </div>
+    <div class="section-count">04 programas</div>
+  </div>
+  <div class="conf-list">
+    <div class="conf-item reveal">
+      <span class="conf-num">01</span>
+      <span class="conf-name">Liderazgo Imparable</span>
+      <div class="conf-tags"><span class="conf-tag">Equipos</span><span class="conf-tag">Líderes</span></div>
+      <span class="conf-arr"><svg width="14" height="14" fill="none" stroke="#0B1E3D" stroke-width="1.5" viewBox="0 0 14 14"><path d="M2.5 7h9M8 3.5L11.5 7 8 10.5"/></svg></span>
+    </div>
+    <div class="conf-item reveal">
+      <span class="conf-num">02</span>
+      <span class="conf-name">Mentalidad Ganadora</span>
+      <div class="conf-tags"><span class="conf-tag">Personal</span><span class="conf-tag">Corporativo</span></div>
+      <span class="conf-arr"><svg width="14" height="14" fill="none" stroke="#0B1E3D" stroke-width="1.5" viewBox="0 0 14 14"><path d="M2.5 7h9M8 3.5L11.5 7 8 10.5"/></svg></span>
+    </div>
+    <div class="conf-item reveal">
+      <span class="conf-num">03</span>
+      <span class="conf-name">Comunicación con Impacto</span>
+      <div class="conf-tags"><span class="conf-tag">Ventas</span><span class="conf-tag">Presentaciones</span></div>
+      <span class="conf-arr"><svg width="14" height="14" fill="none" stroke="#0B1E3D" stroke-width="1.5" viewBox="0 0 14 14"><path d="M2.5 7h9M8 3.5L11.5 7 8 10.5"/></svg></span>
+    </div>
+    <div class="conf-item reveal">
+      <span class="conf-num">04</span>
+      <span class="conf-name">Equipos de Alto Rendimiento</span>
+      <div class="conf-tags"><span class="conf-tag">RRHH</span><span class="conf-tag">Empresa</span></div>
+      <span class="conf-arr"><svg width="14" height="14" fill="none" stroke="#0B1E3D" stroke-width="1.5" viewBox="0 0 14 14"><path d="M2.5 7h9M8 3.5L11.5 7 8 10.5"/></svg></span>
+    </div>
+  </div>
+</section>
+
+<!-- LIBRO -->
+<section class="book-section" id="libro">
+  <div class="book-left reveal-left">
+    <div class="section-tag">Mi libro</div>
+    <h2 class="book-title">NINGÚN<br>SISTEMA<br>ES<br>INTOCABLE</h2>
+    <p class="book-desc">Un libro que desafía la estabilidad y te invita a romper paradigmas para alcanzar resultados extraordinarios.</p>
+    <div class="book-points">
+      <div class="book-point">Mentalidad de crecimiento aplicada al mundo real</div>
+      <div class="book-point">Liderazgo en tiempos de incertidumbre</div>
+      <div class="book-point">Transformación personal y organizacional</div>
+      <div class="book-point">Resultados medibles desde la primera semana</div>
+    </div>
+    <button class="btn-fill">Conocer más →</button>
+  </div>
+  <div class="book-right reveal-right">
+    <div class="book-cover tilt-card">
+      <div class="book-cover-stripe"></div>
+      <div class="book-cover-num">∞</div>
+      <div class="book-tag-small">Fox Expositor</div>
+      <div class="book-title-cover">NINGÚN<br>SISTEMA<br>ES<br>INTOCABLE</div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIOS -->
+<section class="testimonials" id="testimonios">
+  <div class="section-header reveal">
+    <div>
+      <div class="section-tag">Lo que dicen</div>
+      <h2 class="section-title">TESTIMONIOS</h2>
+    </div>
+    <div class="section-count">03 voces</div>
+  </div>
+  <div class="test-grid">
+    <div class="test-card tilt-card reveal">
+      <div class="test-stars">★★★★★</div>
+      <p class="test-quote">"Fox transformó la cultura de nuestro equipo en una sola conferencia. Sus mensajes son directos, prácticos y generan resultados desde el primer día. 100% recomendado."</p>
+      <div class="test-author">
+        <div class="test-av">MR</div>
+        <div><div class="test-name">María Rodríguez</div><div class="test-role">Directora General, Empresa X</div></div>
+      </div>
+    </div>
+    <div class="test-card tilt-card reveal">
+      <div class="test-stars">★★★★★</div>
+      <p class="test-quote">"Llevamos dos años trabajando con Fox para nuestras convenciones anuales. Cada vez supera las expectativas. Su energía es contagiosa y su contenido es de clase mundial."</p>
+      <div class="test-author">
+        <div class="test-av">CG</div>
+        <div><div class="test-name">Carlos González</div><div class="test-role">Gerente General</div></div>
+      </div>
+    </div>
+    <div class="test-card tilt-card reveal">
+      <div class="test-stars">★★★★★</div>
+      <p class="test-quote">"Nunca pensé que una conferencia pudiera cambiar mi perspectiva tan profundamente. Fox tiene el don de conectar con cada persona en la sala."</p>
+      <div class="test-author">
+        <div class="test-av">LP</div>
+        <div><div class="test-name">Laura Pérez</div><div class="test-role">Emprendedora</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section class="contact" id="contacto">
+  <div class="contact-left reveal-left">
+    <div class="section-tag">Trabajemos juntos</div>
+    <h2 class="contact-big">HABLE<br>MOS<br><span>HOY</span></h2>
+    <p class="contact-sub">¿Listo para llevar a tu equipo al siguiente nivel? Contáctame y construyamos una experiencia a medida.</p>
+    <div class="contact-items">
+      <div class="c-item">
+        <div class="c-icon"><svg width="18" height="18" fill="none" stroke-width="1.5" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+        <div><div class="c-label">Correo electrónico</div><div class="c-val">contacto@foxexpositor.com</div></div>
+      </div>
+      <div class="c-item">
+        <div class="c-icon"><svg width="18" height="18" fill="none" stroke-width="1.5" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.38 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.6a16 16 0 0 0 5.49 5.49l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 16.92z"/></svg></div>
+        <div><div class="c-label">Teléfono</div><div class="c-val">+52 55 1234 5678</div></div>
+      </div>
+      <div class="c-item">
+        <div class="c-icon"><svg width="18" height="18" fill="none" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+        <div><div class="c-label">Conferencias y eventos</div><div class="c-val">Disponible en toda Latinoamérica</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="contact-right reveal-right">
+    <div class="cf-group form-row">
+      <div class="cf-group"><label class="cf-label">Nombre</label><input class="cf-input" type="text" placeholder="Tu nombre completo"></div>
+      <div class="cf-group"><label class="cf-label">Empresa</label><input class="cf-input" type="text" placeholder="Nombre de tu empresa"></div>
+    </div>
+    <div class="cf-group"><label class="cf-label">Correo electrónico</label><input class="cf-input" type="email" placeholder="tu@empresa.com"></div>
+    <div class="cf-group"><label class="cf-label">Tipo de evento</label><input class="cf-input" type="text" placeholder="Convención anual, taller, keynote..."></div>
+    <div class="cf-group"><label class="cf-label">Mensaje</label><textarea class="cf-textarea" placeholder="Cuéntame sobre tu evento y lo que buscas lograr..."></textarea></div>
+    <button class="btn-fill" style="align-self:flex-start;margin-top:8px;">Enviar mensaje →</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo"><em>FOX</em> EXPOSITOR</div>
+  <div class="footer-quote">"Ningún sistema es intocable, si tú decides transformarlo." — Fox Expositor</div>
+  <div class="footer-socials">
+    <div class="soc"><svg width="16" height="16" fill="none" stroke-width="1.5" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1" fill="white" stroke="none"/></svg></div>
+    <div class="soc"><svg width="16" height="16" fill="none" stroke-width="1.5" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></div>
+    <div class="soc"><svg width="16" height="16" fill="none" stroke-width="1.5" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></div>
+    <div class="soc"><svg width="16" height="16" fill="none" stroke-width="1.5" viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="white" stroke="none"/></svg></div>
+  </div>
+</footer>
+
+<script>
+// ── CURSOR
+const cur=document.getElementById('cur'),ring=document.getElementById('cur-r');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function loop(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(loop);})();
+document.querySelectorAll('a,button,.conf-item,.soc,.test-card,.tag').forEach(el=>{
+  el.addEventListener('mouseenter',()=>document.body.classList.add('hl'));
+  el.addEventListener('mouseleave',()=>document.body.classList.remove('hl'));
+});
+
+// ── MOUSE TRAIL
+const trails=[];
+for(let i=0;i<8;i++){const d=document.createElement('div');d.className='trail';d.style.cssText=`width:${6-i*.6}px;height:${6-i*.6}px;opacity:${0.4-i*.04};`;document.body.appendChild(d);trails.push({el:d,x:0,y:0});}
+let trailMx=0,trailMy=0;
+document.addEventListener('mousemove',e=>{trailMx=e.clientX;trailMy=e.clientY;});
+(function trailLoop(){trails.forEach((t,i)=>{const prev=i===0?{x:trailMx,y:trailMy}:trails[i-1];t.x+=(prev.x-t.x)*.35;t.y+=(prev.y-t.y)*.35;t.el.style.left=t.x+'px';t.el.style.top=t.y+'px';});requestAnimationFrame(trailLoop);})();
+
+// ── PARTICLES CANVAS
+const canvas=document.getElementById('particles-canvas');
+const ctx=canvas.getContext('2d');
+function resize(){canvas.width=canvas.offsetWidth;canvas.height=canvas.offsetHeight;}
+resize();window.addEventListener('resize',resize);
+const pts=[];
+for(let i=0;i<55;i++)pts.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,r:Math.random()*2+1});
+function drawParticles(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  pts.forEach(p=>{
+    p.x+=p.vx;p.y+=p.vy;
+    if(p.x<0||p.x>canvas.width)p.vx*=-1;
+    if(p.y<0||p.y>canvas.height)p.vy*=-1;
+    ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle='rgba(26,107,255,0.18)';ctx.fill();
+  });
+  pts.forEach((a,i)=>{pts.forEach((b,j)=>{if(j<=i)return;const dx=a.x-b.x,dy=a.y-b.y,dist=Math.sqrt(dx*dx+dy*dy);if(dist<120){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(26,107,255,${0.07*(1-dist/120)})`;ctx.lineWidth=1;ctx.stroke();}});});
+  requestAnimationFrame(drawParticles);
+}
+drawParticles();
+
+// ── SCROLL REVEAL
+const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:.15});
+document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el=>observer.observe(el));
+
+// ── COUNTER ANIMATION
+const counterObs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting&&!e.target.dataset.done){e.target.dataset.done=1;const target=+e.target.dataset.target,dur=1600,step=16;let cur=0;const inc=target/(dur/step);const t=setInterval(()=>{cur=Math.min(cur+inc,target);e.target.textContent=Math.round(cur);if(cur>=target)clearInterval(t);},step);}});},{threshold:.5});
+document.querySelectorAll('.counter').forEach(el=>counterObs.observe(el));
+
+// ── TILT EFFECT
+document.querySelectorAll('.tilt-card').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    const x=((e.clientX-r.left)/r.width-.5)*14;
+    const y=((e.clientY-r.top)/r.height-.5)*-14;
+    card.style.transform=`perspective(600px) rotateY(${x}deg) rotateX(${y}deg) scale(1.02)`;
+  });
+  card.addEventListener('mouseleave',()=>{card.style.transform='perspective(600px) rotateY(0) rotateX(0) scale(1)';});
+});
+
+// ── PARALLAX HERO GLOW
+document.addEventListener('mousemove',e=>{
+  const glow=document.querySelector('.hero-glow');
+  if(glow){const x=e.clientX/window.innerWidth*20-10,y=e.clientY/window.innerHeight*20-10;glow.style.transform=`translate(${x}px,${y}px)`;}
+});
+
+// ── RIPPLE ON BUTTONS
+document.querySelectorAll('.btn-fill,.btn-ghost').forEach(btn=>{
+  btn.addEventListener('click',e=>{
+    const r=btn.getBoundingClientRect();
+    const rip=document.createElement('span');
+    const size=Math.max(btn.offsetWidth,btn.offsetHeight)*2;
+    rip.style.cssText=`position:absolute;border-radius:50%;background:rgba(255,255,255,.3);width:${size}px;height:${size}px;left:${e.clientX-r.left-size/2}px;top:${e.clientY-r.top-size/2}px;transform:scale(0);animation:ripple .5s ease;pointer-events:none;`;
+    btn.style.position='relative';btn.style.overflow='hidden';
+    btn.appendChild(rip);setTimeout(()=>rip.remove(),500);
+  });
+});
+const rs=document.createElement('style');rs.textContent='@keyframes ripple{to{transform:scale(1);opacity:0;}}';document.head.appendChild(rs);
+</script>
+</body>
+</html>
